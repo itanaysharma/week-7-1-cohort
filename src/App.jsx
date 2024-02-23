@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useContext, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -6,13 +6,16 @@ const Dashboard = React.lazy(() => import("./components/Dashboard"));
 const Landing = React.lazy(() => import("./components/Landing"));
 
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { CountContext } from "./context";
 
 function App() {
   const [count, setCount] = useState(0);
   return (
     <div>
       <div>
-        <Count count={count} setCount={setCount}></Count>
+        <CountContext.Provider value={count}>
+          <Count setCount={setCount}></Count>
+        </CountContext.Provider>
       </div>
       <BrowserRouter>
         <Appbar></Appbar>
@@ -62,10 +65,13 @@ function Count({ count, setCount }) {
   );
 }
 
-function CounterRenderere({ count }) {
+function CounterRenderere() {
+  const count = useContext(CountContext);
   return <div>{count}</div>;
 }
-function Buttons({ setCount, count }) {
+function Buttons({ setCount }) {
+  const count = useContext(CountContext);
+
   return (
     <div>
       <button onClick={() => setCount(count + 1)}>Increment</button>
