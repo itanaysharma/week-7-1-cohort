@@ -8,8 +8,12 @@ const Landing = React.lazy(() => import("./components/Landing"));
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 
 function App() {
+  const [count, setCount] = useState(0);
   return (
     <div>
+      <div>
+        <Count count={count} setCount={setCount}></Count>
+      </div>
       <BrowserRouter>
         <Appbar></Appbar>
         <Suspense fallback={<div>Loading....</div>}>
@@ -48,3 +52,24 @@ function Appbar() {
 }
 
 export default App;
+
+function Count({ count, setCount }) {
+  return (
+    <div>
+      <CounterRenderere count={count}></CounterRenderere>
+      <Buttons setCount={setCount} count={count}></Buttons>
+    </div>
+  );
+}
+
+function CounterRenderere({ count }) {
+  return <div>{count}</div>;
+}
+function Buttons({ setCount, count }) {
+  return (
+    <div>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <button onClick={() => setCount(count - 1)}>Decrement</button>
+    </div>
+  );
+}
